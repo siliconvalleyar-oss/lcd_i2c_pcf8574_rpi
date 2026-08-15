@@ -38,7 +38,7 @@ void LCD::i2cWrite(uint8_t data) {
 }
 
 void LCD::expanderWrite(uint8_t data) {
-    i2cWrite(data | backlight_mask_);
+    i2cWrite((data & ~LCD_RW) | backlight_mask_);
 }
 
 void LCD::pulseEnable(uint8_t data) {
