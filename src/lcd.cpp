@@ -49,12 +49,12 @@ void LCD::pulseEnable(uint8_t data) {
 }
 
 void LCD::write4bits(uint8_t data) {
-    expanderWrite(data);
     pulseEnable(data);
 }
 
 void LCD::send(uint8_t value, uint8_t mode) {
     write4bits(((value >> 4) & 0x0F) | mode);
+    usleep(100);
     write4bits((value & 0x0F) | mode);
 }
 
@@ -68,41 +68,41 @@ void LCD::write(uint8_t value) {
 
 void LCD::init() {
     expanderWrite(0);
-    usleep(50000);
+    usleep(100000);
 
     write4bits(0x03);
-    usleep(4500);
+    usleep(5000);
     write4bits(0x03);
-    usleep(450);
+    usleep(1000);
     write4bits(0x03);
-    usleep(450);
+    usleep(1000);
     write4bits(0x02);
-    usleep(450);
+    usleep(1000);
 
     display_function_ = LCD_4BITMODE | LCD_2LINE | LCD_5x8DOTS;
     command(LCD_FUNCTIONSET | display_function_);
-    usleep(4500);
+    usleep(5000);
 
     display_control_ = LCD_DISPLAYON | LCD_CURSOROFF | LCD_BLINKOFF;
     command(LCD_DISPLAYCONTROL | display_control_);
-    usleep(450);
+    usleep(5000);
 
     clear();
-    usleep(DELAY_CLEAR);
+    usleep(2000);
 
     display_mode_ = LCD_ENTRYLEFT | LCD_ENTRYSHIFTDECREMENT;
     command(LCD_ENTRYMODESET | display_mode_);
-    usleep(450);
+    usleep(5000);
 }
 
 void LCD::clear() {
     command(LCD_CLEARDISPLAY);
-    usleep(DELAY_CLEAR);
+    usleep(2000);
 }
 
 void LCD::home() {
     command(LCD_RETURNHOME);
-    usleep(DELAY_HOME);
+    usleep(2000);
 }
 
 void LCD::setCursor(uint8_t col, uint8_t row) {
@@ -114,12 +114,12 @@ void LCD::setCursor(uint8_t col, uint8_t row) {
     }
 
     command(LCD_SETDDRAMADDR | (col + row_offsets_[row]));
-    usleep(DELAY_CMD);
+    usleep(100);
 }
 
 void LCD::writeChar(char c) {
     write(static_cast<uint8_t>(c));
-    usleep(DELAY_CMD);
+    usleep(100);
 }
 
 void LCD::writeString(const std::string& str) {
@@ -131,7 +131,7 @@ void LCD::writeString(const std::string& str) {
 void LCD::createChar(uint8_t slot, const uint8_t* charmap) {
     slot &= 0x07;
     command(LCD_SETCGRAMADDR | (slot << 3));
-    usleep(DELAY_CMD);
+    usleep(100);
     for (uint8_t i = 0; i < 8; i++) {
         write(charmap[i]);
     }
@@ -140,37 +140,37 @@ void LCD::createChar(uint8_t slot, const uint8_t* charmap) {
 void LCD::displayOn() {
     display_control_ |= LCD_DISPLAYON;
     command(LCD_DISPLAYCONTROL | display_control_);
-    usleep(DELAY_CMD);
+    usleep(100);
 }
 
 void LCD::displayOff() {
     display_control_ &= ~LCD_DISPLAYON;
     command(LCD_DISPLAYCONTROL | display_control_);
-    usleep(DELAY_CMD);
+    usleep(100);
 }
 
 void LCD::cursorOn() {
     display_control_ |= LCD_CURSORON;
     command(LCD_DISPLAYCONTROL | display_control_);
-    usleep(DELAY_CMD);
+    usleep(100);
 }
 
 void LCD::cursorOff() {
     display_control_ &= ~LCD_CURSORON;
     command(LCD_DISPLAYCONTROL | display_control_);
-    usleep(DELAY_CMD);
+    usleep(100);
 }
 
 void LCD::blinkOn() {
     display_control_ |= LCD_BLINKON;
     command(LCD_DISPLAYCONTROL | display_control_);
-    usleep(DELAY_CMD);
+    usleep(100);
 }
 
 void LCD::blinkOff() {
     display_control_ &= ~LCD_BLINKON;
     command(LCD_DISPLAYCONTROL | display_control_);
-    usleep(DELAY_CMD);
+    usleep(100);
 }
 
 void LCD::backlightOn() {
