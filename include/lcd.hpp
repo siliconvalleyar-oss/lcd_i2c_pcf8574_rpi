@@ -86,7 +86,7 @@ private:
     static constexpr uint8_t LCD_EN = 0x40;
     static constexpr uint8_t LCD_BACKLIGHT = 0x80;
 
-    static constexpr uint32_t DELAY_ENABLE = 1;
+    static constexpr uint32_t DELAY_ENABLE = 50;
     static constexpr uint32_t DELAY_CMD = 37;
     static constexpr uint32_t DELAY_CLEAR = 1520;
     static constexpr uint32_t DELAY_HOME = 1520;

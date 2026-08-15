@@ -67,7 +67,7 @@ void LCD::write(uint8_t value) {
 }
 
 void LCD::init() {
-    i2cWrite(0);
+    expanderWrite(0);
     usleep(50000);
 
     write4bits(0x03);
