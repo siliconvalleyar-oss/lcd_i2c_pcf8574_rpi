@@ -36,6 +36,7 @@ public:
 
 private:
     void i2cWrite(uint8_t data);
+    void expanderWrite(uint8_t data);
     void pulseEnable(uint8_t data);
     void write4bits(uint8_t data);
     void send(uint8_t value, uint8_t mode);

@@ -1,17 +1,18 @@
 #include "lcd.hpp"
 #include <cerrno>
+#include <fcntl.h>
 
 LCD::LCD(const std::string& i2c_device, uint8_t address)
     : fd_(-1), address_(address), backlight_mask_(LCD_BACKLIGHT),
       display_control_(0), display_function_(0), display_mode_(0),
       num_lines_(4) {
-    fd_ = open(i2c_device.c_str(), O_RDWR);
+    fd_ = ::open(i2c_device.c_str(), O_RDWR);
     if (fd_ < 0) {
         throw std::runtime_error("Failed to open I2C device: " + i2c_device + " (" + std::strerror(errno) + ")");
     }
 
     if (ioctl(fd_, I2C_SLAVE, address_) < 0) {
-        close(fd_);
+        ::close(fd_);
         fd_ = -1;
         throw std::runtime_error("Failed to acquire I2C bus access and/or talk to slave: 0x" +
                                  std::to_string(address_) + " (" + std::strerror(errno) + ")");
@@ -25,13 +26,13 @@ LCD::LCD(const std::string& i2c_device, uint8_t address)
 
 LCD::~LCD() {
     if (fd_ >= 0) {
-        close(fd_);
+        ::close(fd_);
         fd_ = -1;
     }
 }
 
 void LCD::i2cWrite(uint8_t data) {
-    if (write(fd_, &data, 1) != 1) {
+    if (::write(fd_, &data, 1) != 1) {
         throw std::runtime_error("I2C write failed (" + std::string(std::strerror(errno)) + ")");
     }
 }
@@ -53,8 +54,8 @@ void LCD::write4bits(uint8_t data) {
 }
 
 void LCD::send(uint8_t value, uint8_t mode) {
-    write4bits((value & 0xF0) | mode);
-    write4bits((value << 4) | mode);
+    write4bits(((value >> 4) & 0x0F) | mode);
+    write4bits((value & 0x0F) | mode);
 }
 
 void LCD::command(uint8_t cmd) {
