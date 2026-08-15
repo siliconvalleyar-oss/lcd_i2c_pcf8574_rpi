@@ -53,9 +53,9 @@ void LCD::write4bits(uint8_t data) {
 }
 
 void LCD::send(uint8_t value, uint8_t mode) {
-    write4bits(((value >> 4) & 0x0F) | mode);
+    write4bits((((value >> 4) & 0x0F) << 4) | mode);
     usleep(100);
-    write4bits((value & 0x0F) | mode);
+    write4bits(((value & 0x0F) << 4) | mode);
 }
 
 void LCD::command(uint8_t cmd) {

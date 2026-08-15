@@ -81,10 +81,10 @@ private:
 
     static constexpr uint8_t LCD_8BITMODE = 0x10;
 
-    static constexpr uint8_t LCD_RS = 0x10;
-    static constexpr uint8_t LCD_RW = 0x20;
-    static constexpr uint8_t LCD_EN = 0x40;
-    static constexpr uint8_t LCD_BACKLIGHT = 0x80;
+    static constexpr uint8_t LCD_RS = 0x01;
+    static constexpr uint8_t LCD_RW = 0x02;
+    static constexpr uint8_t LCD_EN = 0x04;
+    static constexpr uint8_t LCD_BACKLIGHT = 0x08;
 
     static constexpr uint32_t DELAY_ENABLE = 50;
     static constexpr uint32_t DELAY_CMD = 100;
