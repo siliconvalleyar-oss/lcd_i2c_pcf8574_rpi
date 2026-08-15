@@ -67,16 +67,16 @@ void LCD::write(uint8_t value) {
 }
 
 void LCD::init() {
-    expanderWrite(0);
+    expanderWrite(LCD_BACKLIGHT);
     usleep(100000);
 
-    write4bits(0x03);
+    write4bits((0x03 << 4) | LCD_BACKLIGHT);
     usleep(5000);
-    write4bits(0x03);
+    write4bits((0x03 << 4) | LCD_BACKLIGHT);
     usleep(1000);
-    write4bits(0x03);
+    write4bits((0x03 << 4) | LCD_BACKLIGHT);
     usleep(1000);
-    write4bits(0x02);
+    write4bits((0x02 << 4) | LCD_BACKLIGHT);
     usleep(1000);
 
     display_function_ = LCD_4BITMODE | LCD_2LINE | LCD_5x8DOTS;
